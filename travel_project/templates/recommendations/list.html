@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Recomandările tale</h1>
+
+  <a href="{% url 'generate_recommendation' %}" class="btn btn-primary" style="margin-bottom: 20px;">
+    Generează Recomandare Nouă
+  </a>
+
+  {% if recommendations %}
+    <ul>
+      {% for rec in recommendations %}
+        <li>
+          <strong>{{ rec.location.name }}</strong> - {{ rec.start_date }} până la {{ rec.end_date }} - Buget: {{ rec.budget }}<br>
+          Cazare: {{ rec.accommodation }}<br>
+          Atracții: {{ rec.attractions }}<br>
+          Restaurante: {{ rec.restaurants }}<br>
+          Taguri: {{ rec.tags }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Nu există recomandări pentru tine momentan.</p>
+  {% endif %}
+{% endblock %}
+
+
+<!--Afiseaza o listă de recomandări pentru utilizatorul logat, pe baza datelor din modelul Recommendation.-->

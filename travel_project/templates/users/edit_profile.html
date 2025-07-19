@@ -5,7 +5,38 @@
   <h2>Edit Your Travel Preferences</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    {{ form.budget.label_tag }}
+    {{ form.budget }}
+    <br>
+
+    {{ form.preferred_season.label_tag }}
+    {{ form.preferred_season }}
+    <br>
+
+    <label for="{{ form.interests.id_for_label }}">{{ form.interests.label }}</label>
+    {{ form.interests }}
+    <small style="color: #666; font-size: 0.9em;">
+      {{ form.interests.help_text|safe }}
+    </small>
+    <br>
+
+    {{ form.travel_start.label_tag }}
+    {{ form.travel_start }}
+    <br>
+
+    {{ form.travel_end.label_tag }}
+    {{ form.travel_end }}
+    <br>
+
+    {{ form.accommodation_preference.label_tag }}
+    {{ form.accommodation_preference }}
+    <br>
+
+    {{ form.restaurant_preference.label_tag }}
+    {{ form.restaurant_preference }}
+    <br>
+
     <button type="submit">Save Preferences</button>
   </form>
 {% endblock %}

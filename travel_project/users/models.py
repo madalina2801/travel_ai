@@ -21,5 +21,8 @@ class UserProfile(models.Model):
     travel_start = models.DateField(null=True, blank=True)
     travel_end = models.DateField(null=True, blank=True)
 
+    accommodation_preference = models.CharField(max_length=255, null=True, blank=True)
+    restaurant_preference = models.CharField(max_length=255, null=True, blank=True)
+
     def __str__(self):
         return f"Profilul utilizatorului {self.user.username}"
