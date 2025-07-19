@@ -1,48 +1,71 @@
 from django.shortcuts import render,redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .forms import RecommendationRequestForm
 from .models import Recommendation
 from users.models import UserProfile
-import openai
+from datetime import timedelta
 
-openai.api_key = ""
+
 
 @login_required
 def generate_recommendation(request):
-    if request.method == 'POST':
-        form = RecommendationRequestForm(request.POST)
-        if form.is_valid():
-            prompt = form.cleaned_data['prompt']
-            user_profile = UserProfile.objects.get(user=request.user)
+    user_profile = UserProfile.objects.get(user=request.user)
 
-            response = openai.ChatCompletion.create(
-                   model="gpt-3.5-turbo",  # sau "gpt-4" dacă ai acces
-                   messages=[
-                          {"role": "system", "content": "You are a helpful travel assistant."},
-                          {"role": "user", "content": prompt}
-                          ],
-                          max_tokens=150
-                          )
-            text = response['choices'][0]['message']['content'].strip()
+    # Creează o recomandare simplă, cu date exemplu bazate pe profil
+    location = "București"  # poți adapta
+    start_date = user_profile.travel_start or None
+    end_date = user_profile.travel_end or (user_profile.travel_start + timedelta(days=7) if user_profile.travel_start else None)
+    budget = user_profile.budget
 
-            Recommendation.objects.create(
-                user_profile=user_profile,
-                prompt=prompt,
-                text=text
-            )
+    tags = user_profile.interests or "general"
 
-            return redirect('recommendation_list')
-        else:
-            print("Formular invalid:", form.errors)
-    else:
-        form = RecommendationRequestForm()
+    # Exemplu de text pentru cazare, obiective, restaurante
+    accommodation = "Hotel Central, 3 stele"
+    attractions = "Muzeul Național, Parcul Herăstrău"
+    restaurants = "Caru' cu Bere, La Mama"
 
-    return render(request, 'recommendations/generate.html', {'form': form})
+    # Creăm obiectul Recommendation în baza de date
+    recommendation = Recommendation.objects.create(
+        user_profile=user_profile,
+        location=location,
+        start_date=start_date,
+        end_date=end_date,
+        budget=budget,
+        accommodation=accommodation,
+        attractions=attractions,
+        restaurants=restaurants,
+        tags=tags
+    )
+
+    # Redirecționăm către lista recomandărilor, cu mesaj simplu
+    return HttpResponseRedirect(reverse('recommendation_list'))
 
 @login_required
 def recommendation_list(request):
-    user_profile = UserProfile.objects.get(user=request.user)
-    recommendations = Recommendation.objects.filter(user_profile__user=request.user)
-    return render(request, 'recommendations/list.html', {'recommendations': recommendations})
+    if not request.user.is_authenticated:
+        return redirect('login')
 
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+    except UserProfile.DoesNotExist:
+        return render(request, "recommendations/missing_data.html", {
+            "message": "Nu ai un profil complet. Te rugăm să îți creezi unul."
+        })
+
+    # Check required fields are present
+    if not user_profile.budget or not user_profile.travel_start or not user_profile.travel_end:
+        return render(request, "recommendations/missing_data.html", {
+            "message": "Te rugăm să îți completezi profilul (buget, perioadă) pentru a primi recomandări."
+        })
+
+    recommendations = Recommendation.objects.filter(
+        budget__lte=user_profile.budget,
+        start_date__gte=user_profile.travel_start,
+        end_date__lte=user_profile.travel_end,
+    )
+
+    return render(request, "recommendations/list.html", {
+        "recommendations": recommendations
+    })
 # Create your views here.
