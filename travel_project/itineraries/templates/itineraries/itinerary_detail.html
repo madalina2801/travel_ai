@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Itinerariu: {{ itinerary.location.name }}</h2>
+
+  <div>
+    <strong>Zile:</strong> {{ itinerary.days }}<br>
+    <strong>Cost estimat:</strong> {{ itinerary.estimated_cost }} LEI
+  </div>
+
+  <hr>
+
+  <div id="markdown-content" style="white-space: pre-wrap;">
+    {{ itinerary.plan_text|safe }}
+  </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    const raw = document.getElementById('markdown-content').innerText;
+    document.getElementById('markdown-content').innerHTML = marked.parse(raw);
+  </script>
+{% endblock %}

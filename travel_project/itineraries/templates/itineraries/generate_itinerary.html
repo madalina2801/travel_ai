@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Generează Itinerariu</h2>
+
+  {% if error %}
+    <div style="color: red; margin: 1em 0;">
+      <strong>{{ error }}</strong>
+    </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Generează</button>
+  </form>
+{% endblock %}

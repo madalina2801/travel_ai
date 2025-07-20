@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Itinerariile mele{% endblock %}
+
+{% block content %}
+<h1>Itinerariile mele</h1>
+
+<a href="{% url 'generate_itinerary' %}" class="btn btn-primary mb-3">Generează un nou itinerar</a>
+
+<ul>
+  {% for itinerary in itineraries %}
+    <li>
+      <a href="{% url 'itinerary_detail' itinerary.id %}">
+        {{ itinerary.location.name }} ({{ itinerary.days }} zile)
+      </a>
+      – {{ itinerary.estimated_cost }} LEI
+    </li>
+  {% empty %}
+    <li>Nu există itinerarii salvate.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

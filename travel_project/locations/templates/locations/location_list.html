@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Destinații Turistice</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .location-card {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .location-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .location-description {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Locații disponibile</h1>
+    {% for location in locations %}
+        <div class="location-card">
+            <div class="location-name">{{ location.name }}</div>
+            <div><strong>Climă:</strong> {{ location.climate }}</div>
+            <div><strong>Cost mediu:</strong> {{ location.average_cost }} RON</div>
+            <div><strong>Activități:</strong> {{ location.activities }}</div>
+            <p class="location-description">{{ location.description|linebreaks }}</p>
+        </div>
+    {% empty %}
+        <p>Nu există locații în acest moment.</p>
+    {% endfor %}
+</body>
+</html>
