@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Favoritele mele</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container py-4">
+    <h1>Favoritele mele</h1>
+
+    {% if favorites %}
+        <ul class="list-group">
+        {% for location in favorites %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <h5>{{ location.name }}</h5>
+                    <p>{{ location.description|truncatewords:30 }}</p>
+                    <a href="{% url 'locations:location_detail' location.id %}">Detalii</a>
+                </div>
+                <form method="post" action="{% url 'locations:toggle_favorite' location.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Șterge din favorite</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nu ai adăugat încă locații în favorite.</p>
+    {% endif %}
+
+    <a href="{% url 'locations:location_list' %}">← Înapoi la toate locațiile</a>
+</body>
+</html>

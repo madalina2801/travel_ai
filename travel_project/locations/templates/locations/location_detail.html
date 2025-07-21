@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ location.name }}</title>
+</head>
+<body>
+    <h1>{{ location.name }}</h1>
+    <p><strong>Climă:</strong> {{ location.climate }}</p>
+    <p><strong>Activități:</strong> {{ location.activities }}</p>
+    <p><strong>Cost mediu:</strong> {{ location.average_cost }} RON</p>
+    <p>{{ location.description|linebreaks }}</p>
+
+    <a href="{% url 'locations:location_list' %}">← Înapoi la locații</a>
+
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'locations:toggle_favorite' location.id %}">
+        {% csrf_token %}
+        {% if location.id in favorite_location_ids %}
+            <button type="submit">❤️ Șterge din favorite</button>
+        {% else %}
+            <button type="submit">🤍 Adaugă la favorite</button>
+        {% endif %}
+    </form>
+    {% else %}
+        <p><a href="{% url 'login' %}">Loghează-te</a> pentru a salva în favorite</p>
+    {% endif %}
+</body>
+</html>

@@ -3,6 +3,6 @@ from .views import generate_itinerary_view, itinerary_detail_view,itinerary_list
 
 urlpatterns = [
     path('', itinerary_list_view, name='itinerary_list'),
-    path('generate/', generate_itinerary_view, name='generate_itinerary'),
+    path('itineraries/generate', generate_itinerary_view, name='generate_itinerary'),
     path('<int:itinerary_id>/', itinerary_detail_view, name='itinerary_detail'),
 ]

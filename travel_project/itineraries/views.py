@@ -4,6 +4,7 @@ from .models import Itinerary
 from users.models import UserProfile
 from recommendations.ollama_utils import call_ollama
 from django.shortcuts import get_object_or_404
+from locations.models import Location
 import json
 import re
 
@@ -66,7 +67,15 @@ def generate_itinerary_view(request):
             return redirect('itinerary_detail', itinerary.id)
 
     else:
-        form = ItineraryForm()
+        initial = {}
+        location_id = request.GET.get('location')
+        if location_id:
+            try:
+                location = Location.objects.get(pk=location_id)
+                initial['location'] = location
+            except Location.DoesNotExist:
+                pass
+        form = ItineraryForm(initial=initial)
 
     return render(request, 'itineraries/generate_itinerary.html', {'form': form})
 

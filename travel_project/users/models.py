@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from locations.models import Location
 
 
 class UserProfile(models.Model):
@@ -13,6 +14,12 @@ class UserProfile(models.Model):
         ('winter', 'Iarna'),
         ('any', 'Oricare'),
     ], default='any')
+
+    preferred_climate = models.CharField(max_length=50, choices=[
+        ('tropical', 'Tropical'),
+        ('temperate', 'Temperate'),
+        ('arctic', 'Arctic'),
+    ], null=True, blank=True)
     
     # Interese de călătorie
     interests = models.TextField(help_text="Interese separate prin virgulă. Ex: plajă, munte, cultură")
@@ -23,6 +30,8 @@ class UserProfile(models.Model):
 
     accommodation_preference = models.CharField(max_length=255, null=True, blank=True)
     restaurant_preference = models.CharField(max_length=255, null=True, blank=True)
+    preferred_activities = models.CharField(max_length=100, null=True, blank=True)  # opțional
+    favorite_locations = models.ManyToManyField(Location, blank=True, related_name='favorited_by')
 
     def __str__(self):
         return f"Profilul utilizatorului {self.user.username}"

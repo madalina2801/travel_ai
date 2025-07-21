@@ -11,6 +11,6 @@ class Itinerary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Itinerar pentru  {self.user_profile.username} in {self.location.name} ({self.days} zile)"
+        return f"Itinerar pentru  {self.user.user.username} in {self.location.name} ({self.days} zile)"
 
 # Create your models here.

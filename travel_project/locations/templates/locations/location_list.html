@@ -3,37 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Destinații Turistice</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 2rem; }
-        .location-card {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        .location-name {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #333;
-        }
-        .location-description {
-            color: #666;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Locații disponibile</h1>
+<body class="container py-4">
+    <h1 class="mb-4">Locații disponibile</h1>
+
+    {% if form %}
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            {{ form.climate.label_tag }} {{ form.climate }}
+        </div>
+        <div class="col-md-4">
+            {{ form.activities.label_tag }} {{ form.activities }}
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary w-100">Filtrează</button>
+        </div>
+    </form>
+    {% endif %}
+
+    {% if user.is_authenticated and favorite_location_ids %}
+    <h2 class="mb-3">Locațiile tale favorite ❤️</h2>
+    <ul>
+        {% for location in locations %}
+            {% if location.id in favorite_location_ids %}
+                <li><strong>{{ location.name }}</strong> - {{ location.climate }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="row">
     {% for location in locations %}
-        <div class="location-card">
-            <div class="location-name">{{ location.name }}</div>
-            <div><strong>Climă:</strong> {{ location.climate }}</div>
-            <div><strong>Cost mediu:</strong> {{ location.average_cost }} RON</div>
-            <div><strong>Activități:</strong> {{ location.activities }}</div>
-            <p class="location-description">{{ location.description|linebreaks }}</p>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title">{{ location.name }}</h5>
+
+                        {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'locations:toggle_favorite' location.id %}">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; cursor:pointer; font-size: 24px;">
+                                {% if location.id in favorite_location_ids %}
+                                    ❤️
+                                {% else %}
+                                    🤍
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+
+                    <p class="card-text"><strong>Climă:</strong> {{ location.climate }}</p>
+                    <p class="card-text"><strong>Cost mediu:</strong> {{ location.average_cost }} RON</p>
+                    <p class="card-text"><strong>Activități:</strong> {{ location.activities }}</p>
+                    <p>{{ location.description|linebreaks }}</p>
+
+                    <a href="{% url 'generate_itinerary' %}?location={{ location.id }}" class="btn btn-success btn-sm me-2">Generează Itinerar</a>
+                    <a href="{% url 'locations:location_detail' location.id %}" class="btn btn-outline-secondary btn-sm">Detalii</a>
+                </div>
+            </div>
         </div>
     {% empty %}
-        <p>Nu există locații în acest moment.</p>
+        <p>Nu există locații disponibile.</p>
     {% endfor %}
+    </div>
 </body>
 </html>
