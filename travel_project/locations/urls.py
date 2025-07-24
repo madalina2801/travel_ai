@@ -7,6 +7,6 @@ app_name = 'locations'  # << adaugă asta
 urlpatterns = [
     path('', location_list_view, name='location_list'),
     path('<int:pk>/', location_detail_view, name='location_detail'),
-    path('toggle_favorite/<int:location_id>/', views.toggle_favorite_location, name='toggle_favorite'),
+     path('favorites/', favorite_locations_view, name='favorite_locations'),
     path('<int:location_id>/favorite/', views.toggle_favorite_location, name='toggle_favorite'),
 ]

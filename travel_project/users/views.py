@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserProfileForm
 from .models import UserProfile
@@ -17,4 +19,25 @@ def edit_profile(request):
 
     return render(request, 'users/edit_profile.html', {'form': form})
 
+@login_required
+def profile_view(request):
+    user_profile = request.user.userprofile
+    favorite_locations = user_profile.favorite_locations.all()
+    
+    return render(request, 'users/profile.html', {
+        'user': request.user,
+        'favorite_locations': favorite_locations,
+    })
+
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # loghează automat după înregistrare
+            return redirect('home')  # redirect către homepage sau profil
+    else:
+        form = UserCreationForm()
+    return render(request, 'users/register.html', {'form': form})
 # Create your views here.

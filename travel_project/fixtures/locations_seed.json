@@ -1,0 +1,62 @@
+[
+  {
+    "model": "locations.location",
+    "pk": 1,
+    "fields": {
+      "name": "Machu Picchu",
+      "description": "Ruinele incașe din Peru, una dintre cele mai faimoase destinații turistice.",
+      "climate": "Temperat",
+      "activities": [1]
+    }
+  },
+  {
+    "model": "locations.location",
+    "pk": 2,
+    "fields": {
+      "name": "Laponia",
+      "description": "Regiunea nordică a Finlandei, cunoscută pentru ierni reci și aurora boreală.",
+      "climate": "Rece",
+      "activities": [2]
+    }
+  },
+  {
+    "model": "locations.location",
+    "pk": 3,
+    "fields": {
+      "name": "Paris",
+      "description": "Capitala Franței, orașul iubirii și al artei.",
+      "climate": "Temperat",
+      "activities": [3]
+    }
+  },
+  {
+    "model": "locations.location",
+    "pk": 4,
+    "fields": {
+      "name": "Sahara",
+      "description": "Cel mai mare desert cald din lume, situat în Africa de Nord.",
+      "climate": "Arid",
+      "activities": [4]
+    }
+  },
+  {
+    "model": "locations.location",
+    "pk": 5,
+    "fields": {
+      "name": "Bali",
+      "description": "Insula tropicală din Indonezia, faimoasă pentru plajele și cultura sa.",
+      "climate": "Tropical",
+      "activities": [5]
+    }
+  },
+  {
+    "model": "locations.location",
+    "pk": 6,
+    "fields": {
+      "name": "Tokyo",
+      "description": "Capitala Japoniei, un mix între tradiție și tehnologie modernă.",
+      "climate": "Temperat",
+      "activities": [6]
+    }
+  }
+]

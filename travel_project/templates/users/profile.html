@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Profilul meu</h2>
+    <p><strong>Utilizator:</strong> {{ user.username }}</p>
+
+    <h4>🧡 Locații favorite</h4>
+    {% if favorite_locations %}
+        <ul class="list-group">
+            {% for location in favorite_locations %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ location.name }}
+                    <a href="{% url 'locations:location_detail' location.id %}" class="btn btn-sm btn-primary">Vezi</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nu ai locații favorite încă.</p>
+        <a href="{% url 'locations:locations_list' %}" class="btn btn-secondary">Vezi locații</a>
+    {% endif %}
+
+    <hr>
+    <a href="#" class="btn btn-outline-primary mt-2">✏️ Editare profil (în curând)</a>
+</div>
+{% endblock %}

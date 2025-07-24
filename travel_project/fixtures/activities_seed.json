@@ -1,0 +1,68 @@
+[
+  {
+    "model": "activities.activity",
+    "pk": 1,
+    "fields": {
+      "name": "Drumeții",
+      "description": "Explorarea traseelor montane și a ruinei incase.",
+      "climate": "Temperat",
+      "interest_type": "Natură",
+      "image": ""
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 2,
+    "fields": {
+      "name": "Observarea aurorei boreale",
+      "description": "Spectacolul fenomenal al luminilor în Laponia.",
+      "climate": "Rece",
+      "interest_type": "Natură",
+      "image": ""
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 3,
+    "fields": {
+      "name": "Vizitarea muzeelor",
+      "description": "Explorarea muzeelor celebre din Paris, inclusiv Louvre.",
+      "climate": "Temperat",
+      "interest_type": "Cultură",
+      "image": ""
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 4,
+    "fields": {
+      "name": "Tur cu camila",
+      "description": "Explorarea deșertului Sahara cu ajutorul cailor de deșert.",
+      "climate": "Arid",
+      "interest_type": "Aventură",
+      "image": ""
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 5,
+    "fields": {
+      "name": "Surfing",
+      "description": "Sport acvatic pe valurile insulei Bali.",
+      "climate": "Tropical",
+      "interest_type": "Sport",
+      "image": ""
+    }
+  },
+  {
+    "model": "activities.activity",
+    "pk": 6,
+    "fields": {
+      "name": "Tur cultural",
+      "description": "Vizitarea templelor și experiențe tradiționale japoneze.",
+      "climate": "Temperat",
+      "interest_type": "Cultură",
+      "image": ""
+    }
+  }
+]

@@ -57,7 +57,15 @@
 
                     <p class="card-text"><strong>Climă:</strong> {{ location.climate }}</p>
                     <p class="card-text"><strong>Cost mediu:</strong> {{ location.average_cost }} RON</p>
-                    <p class="card-text"><strong>Activități:</strong> {{ location.activities }}</p>
+                    <p><strong>Activități:</strong>
+  {% if location.activities.all %}
+    {% for activity in location.activities.all %}
+      {{ activity.name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  {% else %}
+    Nicio activitate
+  {% endif %}
+</p>
                     <p>{{ location.description|linebreaks }}</p>
 
                     <a href="{% url 'generate_itinerary' %}?location={{ location.id }}" class="btn btn-success btn-sm me-2">Generează Itinerar</a>

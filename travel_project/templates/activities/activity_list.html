@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Lista activităților</h1>
+
+  <!-- Filtre -->
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-4">
+      <label for="climate" class="form-label">Climă:</label>
+      <select name="climate" id="climate" class="form-select">
+        <option value="">Toate</option>
+        {% for key, value in CLIMATE_CHOICES %}
+          <option value="{{ key }}" {% if request.GET.climate == key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label for="interest_type" class="form-label">Interes:</label>
+      <select name="interest_type" id="interest_type" class="form-select">
+        <option value="">Toate</option>
+        {% for key, value in INTEREST_CHOICES %}
+          <option value="{{ key }}" {% if request.GET.interest_type == key %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+      <button type="submit" class="btn btn-primary me-2">Filtrează</button>
+      <a href="{% url 'activities:activity_list' %}" class="btn btn-secondary">Resetează</a>
+    </div>
+  </form>
+
+  <!-- Lista activităților -->
+  {% if activities %}
+    <div class="row">
+      {% for activity in activities %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            {% if activity.image %}
+              <img src="{{ activity.image.url }}" class="card-img-top" alt="{{ activity.name }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ activity.name }}</h5>
+              <p class="card-text">{{ activity.description|truncatewords:20 }}</p>
+              <p class="mb-1"><strong>Locație:</strong> {{ activity.location.name }}</p>
+              <p class="mb-1"><strong>Climă:</strong> {{ activity.get_climate_display }}</p>
+              <p class="mb-2"><strong>Interes:</strong> {{ activity.get_interest_type_display }}</p>
+              <a href="{% url 'activities:activity_detail' activity.pk %}" class="btn btn-outline-primary btn-sm">Detalii</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-warning" role="alert">
+      Nu există activități pentru criteriile selectate.
+    </div>
+  {% endif %}
+
+  <!-- Paginare -->
+  {% if is_paginated %}
+    <nav aria-label="Paginare activități" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{% if request.GET.climate %}climate={{ request.GET.climate }}&{% endif %}{% if request.GET.interest_type %}interest_type={{ request.GET.interest_type }}&{% endif %}page={{ page_obj.previous_page_number }}">« Anterior</a>
+          </li>
+        {% endif %}
+
+        <li class="page-item disabled">
+          <span class="page-link">Pagina {{ page_obj.number }} din {{ page_obj.paginator.num_pages }}</span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?{% if request.GET.climate %}climate={{ request.GET.climate }}&{% endif %}{% if request.GET.interest_type %}interest_type={{ request.GET.interest_type }}&{% endif %}page={{ page_obj.next_page_number }}">Următor »</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

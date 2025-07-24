@@ -18,15 +18,20 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
+from core.views import home_view
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',lambda request: HttpResponse("Welcome to the Travel Project!")),  # Placeholder for home view
+    path('', home_view, name='home'),
+    path('core/', include('core.urls')),
     path('recommendations/', include('recommendations.urls')),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('users.urls')),
     path('profile/', include('users.urls')),
     path('itineraries/', include('itineraries.urls')), # Include itineraries app URLs
     path('locations/', include('locations.urls')),  # Include locations app URLs
+    path('', lambda request: redirect('activities:activity_list')),
+    path('activities/', include('activities.urls')),  # Include activities app URLs
 ]

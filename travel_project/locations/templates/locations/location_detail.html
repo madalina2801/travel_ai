@@ -7,8 +7,14 @@
 <body>
     <h1>{{ location.name }}</h1>
     <p><strong>Climă:</strong> {{ location.climate }}</p>
-    <p><strong>Activități:</strong> {{ location.activities }}</p>
-    <p><strong>Cost mediu:</strong> {{ location.average_cost }} RON</p>
+    <p><strong>Activități:</strong>
+  {% for activity in location.activities.all %}
+    {{ activity.name }}{% if not forloop.last %}, {% endif %}
+  {% empty %}
+    Nicio activitate
+  {% endfor %}
+    </p>
+    <p>Cost mediu: {{ location.average_cost|default_if_none:"0.00" }} RON</p>
     <p>{{ location.description|linebreaks }}</p>
 
     <a href="{% url 'locations:location_list' %}">← Înapoi la locații</a>

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.hero-banner {
+  background-image: url('/static/images/banner-machu-picchu.jpg'); 
+  background-size: cover;
+  background-position: center;
+  padding: 120px 20px;
+  color: white;
+  text-align: center;
+  position: relative;
+  border-radius: 12px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  margin: auto;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.hero-content .btn {
+  font-size: 1.2rem;
+  padding: 12px 28px;
+  border-radius: 8px;
+}
+</style>
+
+<div class="hero-banner mt-4">
+  <div class="hero-content">
+    <h1>🌍 Descoperă lumea cu Travel AI</h1>
+    <p>Planifică, explorează și salvează locațiile tale favorite.</p>
+    <a href="{% url 'locations:location_list' %}" class="btn btn-success">Vezi locațiile</a>
+    <a href="{% url 'activities:activity_list' %}" class="btn btn-primary ms-3">Vezi activitățile</a>
+  </div>
+</div>
+{% endblock %}

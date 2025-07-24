@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Location
+from locations.models import Location
+from activities.models import Activity
 from .forms import LocationFilterForm
 from users.models import UserProfile
 from recommendations.ollama_utils import call_ollama
@@ -11,12 +12,12 @@ def location_list_view(request):
 
     if form.is_valid():
         climate = form.cleaned_data.get('climate')
-        activities = form.cleaned_data.get('activities')
+        activity_name = form.cleaned_data.get('activities')
 
         if climate:
-            locations = locations.filter(climate__icontains=climate)
-        if activities:
-            locations = locations.filter(activities__icontains=activities)
+            locations = locations.filter(climate__iexact=climate)
+        if activity_name:
+            locations = locations.filter(activities__name__iexact=activity_name)
 
     # Obținem preferințele din profilul utilizatorului (dacă există)
     preferences = ''
@@ -30,10 +31,15 @@ def location_list_view(request):
         user_profile = None
 
     # Pregătim datele pentru AI
-    locations_data = [
-        {'id': l.id, 'name': l.name, 'climate': l.climate, 'activities': l.activities}
-        for l in locations
-    ]
+    locations_data = []
+    for loc in locations:
+        activity_names = [a.name for a in loc.activities.all()]  # folosind related_name din ForeignKey
+        locations_data.append({
+        'id': loc.id,
+        'name': loc.name,
+        'climate': loc.climate,
+        'activities': ', '.join(activity_names)
+    })
     prompt = (
         f"Clasifică următoarele locații după relevanța lor pentru un utilizator care preferă: {preferences}. "
         f"Returnează doar o listă JSON cu ID-urile în ordinea descrescătoare a recomandării. Ex: [3, 1, 5]\n"
