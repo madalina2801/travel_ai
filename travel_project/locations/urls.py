@@ -5,7 +5,7 @@ from . import views
 app_name = 'locations'  # << adaugă asta
 
 urlpatterns = [
-    path('', location_list_view, name='location_list'),
+    path('', location_list_view, name='locations_list'),
     path('<int:pk>/', location_detail_view, name='location_detail'),
      path('favorites/', favorite_locations_view, name='favorite_locations'),
     path('<int:location_id>/favorite/', views.toggle_favorite_location, name='toggle_favorite'),

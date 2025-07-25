@@ -4,6 +4,8 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserProfileForm
 from .models import UserProfile
+from itineraries.models import Itinerary
+from recommendations.views import generate_recommendation
 
 @login_required
 def edit_profile(request):
@@ -13,7 +15,7 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('recommendation_list')  # Or any page you prefer
+            return redirect('recommendation_list')  
     else:
         form = UserProfileForm(instance=user_profile)
 
@@ -21,12 +23,16 @@ def edit_profile(request):
 
 @login_required
 def profile_view(request):
-    user_profile = request.user.userprofile
+    user_profile = UserProfile.objects.get(user=request.user)
     favorite_locations = user_profile.favorite_locations.all()
+    itineraries = Itinerary.objects.filter(user=user_profile)
+    recommendations = generate_recommendation(user_profile)
     
     return render(request, 'users/profile.html', {
         'user': request.user,
         'favorite_locations': favorite_locations,
+        'itineraries': itineraries,
+        'recommendations': recommendations,
     })
 
 

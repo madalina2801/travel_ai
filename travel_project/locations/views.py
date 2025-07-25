@@ -17,7 +17,7 @@ def location_list_view(request):
         if climate:
             locations = locations.filter(climate__iexact=climate)
         if activity_name:
-            locations = locations.filter(activities__name__iexact=activity_name)
+            locations = locations.filter(activity_set__name__iexact=activity_name)
 
     # Obținem preferințele din profilul utilizatorului (dacă există)
     preferences = ''
@@ -33,7 +33,7 @@ def location_list_view(request):
     # Pregătim datele pentru AI
     locations_data = []
     for loc in locations:
-        activity_names = [a.name for a in loc.activities.all()]  # folosind related_name din ForeignKey
+        activity_names = [a.name for a in loc.activity_set.all()]  # folosind related_name din ForeignKey
         locations_data.append({
         'id': loc.id,
         'name': loc.name,
@@ -80,7 +80,7 @@ def toggle_favorite_location(request, location_id):
     else:
         user_profile.favorite_locations.add(location)
     
-    return redirect('locations:location_list')  # redirecționează către lista locațiilor
+    return redirect('locations:locations_list')  # redirecționează către lista locațiilor
 
 @login_required
 def favorite_locations_view(request):

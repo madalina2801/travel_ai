@@ -17,7 +17,7 @@
     <p>Cost mediu: {{ location.average_cost|default_if_none:"0.00" }} RON</p>
     <p>{{ location.description|linebreaks }}</p>
 
-    <a href="{% url 'locations:location_list' %}">← Înapoi la locații</a>
+    <a href="{% url 'locations:locations_list' %}">← Înapoi la locații</a>
 
     {% if user.is_authenticated %}
     <form method="post" action="{% url 'locations:toggle_favorite' location.id %}">

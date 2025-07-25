@@ -3,10 +3,11 @@
     "model": "activities.activity",
     "pk": 1,
     "fields": {
+      "location": 1,
       "name": "Drumeții",
-      "description": "Explorarea traseelor montane și a ruinei incase.",
-      "climate": "Temperat",
-      "interest_type": "Natură",
+      "description": "Explorarea traseelor montane și a ruinei incașe.",
+      "climate": "temperate",
+      "interest_type": "nature",
       "image": ""
     }
   },
@@ -14,10 +15,11 @@
     "model": "activities.activity",
     "pk": 2,
     "fields": {
+      "location": 2,
       "name": "Observarea aurorei boreale",
       "description": "Spectacolul fenomenal al luminilor în Laponia.",
-      "climate": "Rece",
-      "interest_type": "Natură",
+      "climate": "polar",
+      "interest_type": "nature",
       "image": ""
     }
   },
@@ -25,10 +27,11 @@
     "model": "activities.activity",
     "pk": 3,
     "fields": {
+      "location": 3,
       "name": "Vizitarea muzeelor",
       "description": "Explorarea muzeelor celebre din Paris, inclusiv Louvre.",
-      "climate": "Temperat",
-      "interest_type": "Cultură",
+      "climate": "temperate",
+      "interest_type": "cultural",
       "image": ""
     }
   },
@@ -36,10 +39,11 @@
     "model": "activities.activity",
     "pk": 4,
     "fields": {
-      "name": "Tur cu camila",
+      "location": 4,
+      "name": "Tur cu cămila",
       "description": "Explorarea deșertului Sahara cu ajutorul cailor de deșert.",
-      "climate": "Arid",
-      "interest_type": "Aventură",
+      "climate": "arid",
+      "interest_type": "adventure",
       "image": ""
     }
   },
@@ -47,10 +51,11 @@
     "model": "activities.activity",
     "pk": 5,
     "fields": {
+      "location": 5,
       "name": "Surfing",
       "description": "Sport acvatic pe valurile insulei Bali.",
-      "climate": "Tropical",
-      "interest_type": "Sport",
+      "climate": "tropical",
+      "interest_type": "adventure",
       "image": ""
     }
   },
@@ -58,10 +63,11 @@
     "model": "activities.activity",
     "pk": 6,
     "fields": {
+      "location": 6,
       "name": "Tur cultural",
       "description": "Vizitarea templelor și experiențe tradiționale japoneze.",
-      "climate": "Temperat",
-      "interest_type": "Cultură",
+      "climate": "temperate",
+      "interest_type": "cultural",
       "image": ""
     }
   }

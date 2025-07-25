@@ -20,6 +20,32 @@
     {% endif %}
 
     <hr>
-    <a href="#" class="btn btn-outline-primary mt-2">✏️ Editare profil (în curând)</a>
+
+    <!-- Itinerarii -->
+   <h4>🧭 Itinerariile mele</h4>
+<a href="{% url 'itinerary_list' %}" class="btn btn-success">Vezi itinerarii</a>
+<a href="{% url 'generate_itinerary' %}" class="btn btn-outline-primary">Generează itinerar nou</a>
+
+<hr>
+<h4>🌟 Recomandări personalizate</h4>
+{% if recommendations %}
+    <ul class="list-group">
+        {% for rec in recommendations %}
+            {% if rec.location and rec.location.id %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ rec.location.name }} – {{ rec.location.climate|default:"fără detalii" }}
+                    <a href="{% url 'locations:location_detail' rec.location.id %}" class="btn btn-sm btn-success">Vezi</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nu există recomandări generate.</p>
+{% endif %}
+    <a href="{% url 'generate_recommendation' %}" class="btn btn-primary">Vezi toate recomandările</a>
+    
+
+    <hr>
+    {#<a href="#" class="btn btn-outline-primary mt-2">✏️ Editare profil (în curând)</a>#}
 </div>
 {% endblock %}

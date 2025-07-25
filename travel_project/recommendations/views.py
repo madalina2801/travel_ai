@@ -109,10 +109,12 @@ def recommendation_list(request):
         })
 
     recommendations = Recommendation.objects.filter(
-        budget__lte=user_profile.budget,
-        start_date__gte=user_profile.travel_start,
-        end_date__lte=user_profile.travel_end,
-    )
+    location__isnull=False,
+    location__id__isnull=False,
+    budget__lte=user_profile.budget,
+    start_date__gte=user_profile.travel_start,
+    end_date__lte=user_profile.travel_end,
+)
 
     return render(request, "recommendations/list.html", {
         "recommendations": recommendations

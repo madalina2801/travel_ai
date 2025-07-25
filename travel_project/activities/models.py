@@ -16,6 +16,11 @@ INTEREST_CHOICES = [
 ]
 
 class Activity(models.Model):
+    location = models.ForeignKey(
+        'locations.Location',
+        on_delete=models.CASCADE,
+        related_name='activity_set' 
+    )
     name = models.CharField(max_length=100)
     description = models.TextField()
     climate = models.CharField(max_length=50, choices=CLIMATE_CHOICES)
@@ -25,8 +30,8 @@ class Activity(models.Model):
     def __str__(self):
         return self.name
     
-    def get_locations(self):
-        return ", ".join([loc.name for loc in self.locations.all()])
-    get_locations.short_description = 'Locations'
+    def get_location(self):
+        return self.location.name if self.location else "-"
+    get_location.short_description = 'Location'
 
 # Create your models here.
