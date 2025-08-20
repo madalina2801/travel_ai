@@ -8,7 +8,8 @@
       "description": "Explorarea traseelor montane și a ruinei incașe.",
       "climate": "temperate",
       "interest_type": "nature",
-      "image": ""
+      "image": "",
+      "estimated_price": "300.00"
     }
   },
   {
@@ -20,7 +21,8 @@
       "description": "Spectacolul fenomenal al luminilor în Laponia.",
       "climate": "polar",
       "interest_type": "nature",
-      "image": ""
+      "image": "",
+      "estimated_price": "1000.00"
     }
   },
   {
@@ -32,7 +34,8 @@
       "description": "Explorarea muzeelor celebre din Paris, inclusiv Louvre.",
       "climate": "temperate",
       "interest_type": "cultural",
-      "image": ""
+      "image": "",
+      "estimated_price": "500.00"
     }
   },
   {
@@ -44,7 +47,8 @@
       "description": "Explorarea deșertului Sahara cu ajutorul cailor de deșert.",
       "climate": "arid",
       "interest_type": "adventure",
-      "image": ""
+      "image": "",
+      "estimated_price": "3000.00"
     }
   },
   {
@@ -56,7 +60,8 @@
       "description": "Sport acvatic pe valurile insulei Bali.",
       "climate": "tropical",
       "interest_type": "adventure",
-      "image": ""
+      "image": "",
+      "estimated_price": "900.00"
     }
   },
   {
@@ -68,7 +73,8 @@
       "description": "Vizitarea templelor și experiențe tradiționale japoneze.",
       "climate": "temperate",
       "interest_type": "cultural",
-      "image": ""
+      "image": "",
+      "estimated_price": "1500.00"
     }
   }
 ]

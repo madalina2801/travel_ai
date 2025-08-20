@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Recomandare pentru {{ recommendation.location.name }}</h2>
+    <p><strong>Perioadă:</strong> {{ recommendation.start_date }} – {{ recommendation.end_date }}</p>
+    <p><strong>Buget:</strong> {{ recommendation.budget }} EUR</p>
+    <p><strong>Cazare:</strong> {{ recommendation.accommodation }}</p>
+    <p><strong>Atracții:</strong> {{ recommendation.attractions }}</p>
+    <p><strong>Restaurante:</strong> {{ recommendation.restaurants }}</p>
+    <p><strong>Taguri:</strong> {{ recommendation.tags }}</p>
+
+    <a href="{% url 'recommendation_list' %}" class="btn btn-secondary mt-3">Înapoi la toate recomandările</a>
+</div>
+{% endblock %}

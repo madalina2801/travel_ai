@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -7,23 +7,26 @@ from users.models import UserProfile
 from datetime import timedelta
 from locations.models import Location
 from .ollama_utils import call_ollama
+from django.contrib import messages
+import random
+
 
 
 
 
 def generate_ai_recommendation(user_profile):
-    # Evită duplicate pentru același user și interval
-    existing = Recommendation.objects.filter(
-        user_profile=user_profile,
-        start_date=user_profile.travel_start,
-        end_date=user_profile.travel_end,
-    ).first()
-    if existing:
-        return existing
 
     # Preferințele fallback
     accommodation_pref = user_profile.accommodation_preference or "nu a specificat"
     restaurant_pref = user_profile.restaurant_preference or "nu a specificat"
+
+
+    # Obține locațiile recomandate anterior
+    previous_locations = Recommendation.objects.filter(user_profile=user_profile).values_list('location__name', flat=True)
+    exclude_cities = ', '.join(previous_locations) if previous_locations else "Nicio locație anterioară"
+
+    # Seed random pentru variație
+    random_seed = random.randint(1000, 9999)
 
     # Prompt îmbunătățit
     prompt = f"""
@@ -33,6 +36,9 @@ Creează o recomandare turistică personalizată pentru un utilizator cu:
 - Interese: {user_profile.interests}
 - Preferințe cazare: {accommodation_pref}
 - Preferințe restaurante: {restaurant_pref}
+
+Locații deja sugerate: {exclude_cities}
+Seed aleator: {random_seed}
 
 Returnează doar următoarele 5 linii (una per secțiune), fără introduceri sau explicații:
 
@@ -80,14 +86,20 @@ Returnează doar următoarele 5 linii (una per secțiune), fără introduceri sa
 def generate_recommendation(request):
     try:
         user_profile = UserProfile.objects.get(user=request.user)
-        generate_ai_recommendation(user_profile)
-        return redirect('recommendation_list')
+        if not user_profile.travel_start or not user_profile.travel_end:
+            return render(request, "recommendations/missing_data.html", {
+                "message": "Te rugăm să îți completezi perioada de călătorie în profil pentru a genera recomandări."
+        })
+
+        recommendation = generate_ai_recommendation(user_profile)
+        return redirect('recommendation_detail', pk=recommendation.pk)
 
     except Exception as e:
         return render(request, "recommendations/error.html", {
             "message": f"Eroare generare AI: {str(e)}"
         })
-
+    
+   
 
 
 @login_required
@@ -119,4 +131,19 @@ def recommendation_list(request):
     return render(request, "recommendations/list.html", {
         "recommendations": recommendations
     })
+
+@login_required
+def delete_recommendation(request, pk):
+    recommendation = get_object_or_404(Recommendation, pk=pk, user_profile__user=request.user)
+    recommendation.delete()
+    messages.success(request, "Recomandarea a fost ștearsă.")
+    return redirect('recommendation_list')
+
+@login_required
+def recommendation_detail(request, pk):
+    recommendation = get_object_or_404(Recommendation, pk=pk, user_profile__user=request.user)
+    return render(request, 'recommendations/detail.html', {
+        'recommendation': recommendation
+    })
+
 # Create your views here.

@@ -1,28 +1,44 @@
 {% extends 'base.html' %}
 
+{% block title %}Recomandările mele{% endblock %}
+
 {% block content %}
-  <h1>Recomandările tale</h1>
+<h1 class="mb-4">Recomandările mele</h1>
 
-  <a href="{% url 'generate_recommendation' %}" class="btn btn-primary" style="margin-bottom: 20px;">
-    Generează Recomandare Nouă
-  </a>
+<a href="{% url 'generate_recommendation' %}" class="btn btn-primary mb-4">Generează o nouă recomandare</a>
 
-  {% if recommendations %}
-    <ul>
-      {% for rec in recommendations %}
-        <li>
-          <strong>{{ rec.location.name }}</strong> - {{ rec.start_date }} până la {{ rec.end_date }} - Buget: {{ rec.budget }}<br>
-          Cazare: {{ rec.accommodation }}<br>
-          Atracții: {{ rec.attractions }}<br>
-          Restaurante: {{ rec.restaurants }}<br>
-          Taguri: {{ rec.tags }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Nu există recomandări pentru tine momentan.</p>
-  {% endif %}
+{% if recommendations %}
+  <div class="row">
+    {% for rec in recommendations %}
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ rec.location.name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Generată la: {{ rec.created_at|date:"d M Y H:i" }}</h6>
+
+            <p><strong>Perioadă:</strong> {{ rec.start_date }} – {{ rec.end_date }}</p>
+            <p><strong>Buget:</strong> {{ rec.budget }} EUR</p>
+            <p><strong>Cazare:</strong> {{ rec.accommodation }}</p>
+            <p><strong>Atracții:</strong> {{ rec.attractions }}</p>
+            <p><strong>Restaurante:</strong> {{ rec.restaurants }}</p>
+            <p><strong>Taguri:</strong> {{ rec.tags }}</p>
+
+            <a href="{% url 'locations:location_detail' rec.location.id %}" class="card-link">Detalii locație</a>
+
+            <form action="{% url 'delete_recommendation' rec.pk %}" method="post" class="mt-3">
+               {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ești sigur că vrei să ștergi această recomandare?')">
+                Șterge
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>Nu ai nicio recomandare momentan.</p>
+{% endif %}
 {% endblock %}
-
 
 <!--Afiseaza o listă de recomandări pentru utilizatorul logat, pe baza datelor din modelul Recommendation.-->

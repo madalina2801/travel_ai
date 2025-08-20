@@ -26,6 +26,7 @@ class Activity(models.Model):
     climate = models.CharField(max_length=50, choices=CLIMATE_CHOICES)
     interest_type = models.CharField(max_length=50, choices=INTEREST_CHOICES)
     image = models.ImageField(upload_to='activities/', null=True, blank=True)
+    estimated_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return self.name

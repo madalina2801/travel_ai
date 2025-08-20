@@ -2,7 +2,7 @@ from django.urls import path
 from .views import location_list_view,location_detail_view,favorite_locations_view
 from . import views
 
-app_name = 'locations'  # << adaugă asta
+app_name = 'locations'  
 
 urlpatterns = [
     path('', location_list_view, name='locations_list'),

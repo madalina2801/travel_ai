@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ activity.name }}</h1>
+  <p><strong>Descriere:</strong> {{ activity.description }}</p>
+  <p><strong>Locație:</strong> {{ activity.location.name }}</p>
+  <p><strong>Preț estimat:</strong> 
+    {% if activity.estimated_price %}
+        {{ activity.estimated_price }} RON
+    {% else %}
+        Informație indisponibilă
+    {% endif %}
+</p>
+{% endblock %}

@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserProfileForm
 from .models import UserProfile
 from itineraries.models import Itinerary
-from recommendations.views import generate_recommendation
+from recommendations.views import generate_ai_recommendation
+from recommendations.models import Recommendation
 
 @login_required
 def edit_profile(request):
@@ -26,7 +27,7 @@ def profile_view(request):
     user_profile = UserProfile.objects.get(user=request.user)
     favorite_locations = user_profile.favorite_locations.all()
     itineraries = Itinerary.objects.filter(user=user_profile)
-    recommendations = generate_recommendation(user_profile)
+    recommendations = Recommendation.objects.filter(user_profile=user_profile)
     
     return render(request, 'users/profile.html', {
         'user': request.user,
