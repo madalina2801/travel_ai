@@ -34,4 +34,6 @@ urlpatterns = [
     path('locations/', include('locations.urls')),  # Include locations app URLs
     path('', lambda request: redirect('activities:activity_list')),
     path('activities/', include('activities.urls')),  # Include activities app URLs
+    path("events/", include("events.urls")),  # Include events app URLs
+    
 ]

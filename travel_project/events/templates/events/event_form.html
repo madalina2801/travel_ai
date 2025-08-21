@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Adaugă un eveniment</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Salvează</button>
+</form>
+{% endblock %}

@@ -31,5 +31,16 @@
     {% else %}
         <p><a href="{% url 'login' %}">Loghează-te</a> pentru a salva în favorite</p>
     {% endif %}
+    <h2>Evenimente recomandate</h2>
+<ul>
+  {% for event in events %}
+    <li>
+      <strong>{{ event.title }}</strong> - {{ event.date }} <br>
+      {{ event.description }}
+    </li>
+  {% empty %}
+    <li>Niciun eveniment recomandat.</li>
+  {% endfor %}
+</ul>
 </body>
 </html>

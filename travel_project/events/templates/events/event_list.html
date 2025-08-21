@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Evenimente</h2>
+<a href="{% url 'add_event' %}">➕ Adaugă un eveniment</a>
+<ul>
+  {% for event in events %}
+    <li>
+      <a href="{% url 'event_detail' event.pk %}">{{ event.title }}</a>
+      - {{ event.date }} ({{ event.location.name }})
+      {% if event.is_ai_generated %}<span>🤖 AI</span>{% endif %}
+    </li>
+  {% empty %}
+    <li>Nu există evenimente momentan.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

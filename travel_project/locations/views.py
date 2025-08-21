@@ -5,6 +5,7 @@ from .forms import LocationFilterForm
 from users.models import UserProfile
 from recommendations.ollama_utils import call_ollama
 from django.contrib.auth.decorators import login_required
+from events.services import generate_ai_events
 
 def location_list_view(request): 
     locations = Location.objects.all()
@@ -67,7 +68,13 @@ def location_list_view(request):
 
 def location_detail_view(request, pk):
     location = get_object_or_404(Location, pk=pk)
-    return render(request, 'locations/location_detail.html', {'location': location})
+    # dacă nu există evenimente generate, cerem AI-ului să creeze
+    if not location.events.filter(is_ai_generated=True).exists():
+        generate_ai_events(location, request.user if request.user.is_authenticated else None)
+
+    events = location.events.all().order_by("date")
+    
+    return render(request, 'locations/location_detail.html', {'location': location,"events": events})
 
 
 @login_required

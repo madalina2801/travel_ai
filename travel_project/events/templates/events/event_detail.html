@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ event.title }}</h2>
+<p><strong>Data:</strong> {{ event.date }}</p>
+<p><strong>Locație:</strong> {{ event.location.name }}</p>
+<p><strong>Descriere:</strong> {{ event.description }}</p>
+<p><strong>Categorie:</strong> {{ event.get_category_display }}</p>
+
+{% if user.is_authenticated %}
+  <a href="{% url 'join_event' event.pk %}">✅ Mă interesează</a>
+{% endif %}
+
+<h3>Comentarii</h3>
+<ul>
+  {% for comment in comments %}
+    <li><strong>{{ comment.user.username }}</strong>: {{ comment.content }} ({{ comment.created_at }})</li>
+  {% empty %}
+    <li>Nu există comentarii încă.</li>
+  {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Adaugă comentariu</button>
+  </form>
+{% else %}
+  <p><a href="{% url 'login' %}">Autentifică-te</a> pentru a comenta.</p>
+{% endif %}
+{% endblock %}

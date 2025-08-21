@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',  # Ensure the UsersConfig is included
     'core',  # Include the core app
     'activities',  # Include the activities app
+    'events',  # Include the events app
 
 ]
 
