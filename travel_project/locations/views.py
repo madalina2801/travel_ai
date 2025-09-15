@@ -74,7 +74,10 @@ def location_detail_view(request, pk):
 
     events = location.events.all().order_by("date")
     
-    return render(request, 'locations/location_detail.html', {'location': location,"events": events})
+    return render(request, "locations/location_detail.html", {
+        "location": location,
+        "events": events
+    })
 
 
 @login_required

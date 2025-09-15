@@ -1,12 +1,22 @@
 from django.shortcuts import render,get_object_or_404, redirect
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Event
 from .forms import EventForm, CommentForm
 # Create your views here.
-
 def event_list(request):
-    events = Event.objects.all().order_by('-date')
-    return render(request, 'events/event_list.html', {'events': events})
+    now = timezone.now()
+    events_ai = Event.objects.filter(is_ai_generated=True).order_by("date")
+    events_user = Event.objects.filter(is_ai_generated=False).order_by("date")
+
+    print("NOW:", now)
+    print("AI events:", list(events_ai.values("title", "date")))
+    print("User events:", list(events_user.values("title", "date")))
+    context = {
+        "events_ai": events_ai,
+        "events_user": events_user,
+    }
+    return render(request, 'events/event_list.html', context)
 
 def event_detail(request, pk):
     event = get_object_or_404(Event, pk=pk)

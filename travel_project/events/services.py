@@ -1,45 +1,72 @@
 import json
+import re
 from recommendations.ollama_utils import call_ollama
 from .models import Event
-from django.utils.timezone import now,timedelta
+from django.utils import timezone
 
+def extract_json_blocks(text):
+    """
+    Extrage blocurile JSON dintre ```json și ``` din textul AI.
+    Returnează o listă de dicționare Python.
+    """
+    pattern = r"```json\s*(\[\s*{.*?}\s*\])\s*```"
+    matches = re.findall(pattern, text, flags=re.DOTALL)
+    results = []
+    for match in matches:
+        try:
+            data = json.loads(match)
+            if isinstance(data, list):
+                results.extend(data)
+        except json.JSONDecodeError:
+            continue
+    return results
 
 def generate_ai_events(location, user=None):
+    """
+    Generează evenimente AI pentru o locație, le curăță și le salvează doar pe cele valide.
+    Returnează lista de evenimente create.
+    """
     prompt = f"""
-Generează o listă JSON cu 3 evenimente pentru {location.name}.
-Format exact:
-[
-  {{
-    "title": "...",
-    "description": "...",
-    "category": "...",
-    "date (în format YYYY-MM-DD)": "..."
-  }},
-  ...
-]
-Returnează STRICT JSON valid, fără explicații.
-"""
-    response_text = call_ollama(prompt)  # asta e deja un string
+    Generează 3 evenimente turistice pentru locația {location.name}.
+    Returnează STRICT JSON valid cu câmpurile:
+    - title (string)
+    - description (string)
+    - category (string)
+    - date (string, format YYYY-MM-DD)
+    """
 
-    try:
-        events_data = json.loads(response_text)  # încearcă să parsezi direct JSON
-    except json.JSONDecodeError:
-        # fallback: dacă nu vine JSON valid, îl spargem pe linii
-        events_data = [{"title": line, "description": line, "category": "other"}
-                       for line in response_text.split("\n") if line.strip()]
+    response_text = call_ollama(prompt)
+    events_data = extract_json_blocks(response_text)
+    created_events = []
 
-    from .models import Event
-    generated_events = []
     for e in events_data:
-        event = Event.objects.create(
-            title=e.get("title", "Eveniment AI"),
-            description=e.get("description", ""),
-            category=e.get("category", "other"),
-            location=location,
-            created_by=user,
-            is_ai_generated=True,
-            date=now().date(),
-        )
-        generated_events.append(event)
+        title = (e.get("title") or "").strip()
+        description = (e.get("description") or "Fără descriere").strip()
+        category = (e.get("category") or "General").strip()
+        date_str = e.get("date") or e.get("date (în format YYYY-MM-DD)")
 
-    return generated_events
+        # Skip dacă nu există titlu sau dată
+        if not title or not date_str:
+            continue
+
+        # Verificare duplicate
+        if Event.objects.filter(title=title, date=date_str, location=location, is_ai_generated=True).exists():
+            continue
+
+        # Creare eveniment valid
+        try:
+            event = Event.objects.create(
+                location=location,
+                title=title,
+                description=description,
+                category=category,
+                date=date_str,
+                created_by=user if user else None,
+                is_ai_generated=True
+            )
+            created_events.append(event)
+        except Exception as ex:
+            print(f"Eroare la crearea evenimentului AI: {title}, {ex}")
+            continue
+
+    return created_events

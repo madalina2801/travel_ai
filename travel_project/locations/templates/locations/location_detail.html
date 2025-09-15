@@ -17,7 +17,7 @@
     <p>Cost mediu: {{ location.average_cost|default_if_none:"0.00" }} RON</p>
     <p>{{ location.description|linebreaks }}</p>
 
-    <a href="{% url 'locations:locations_list' %}">← Înapoi la locații</a>
+    <a href="{% url 'locations:location_list' %}">← Înapoi la locații</a>
 
     {% if user.is_authenticated %}
     <form method="post" action="{% url 'locations:toggle_favorite' location.id %}">
@@ -31,15 +31,17 @@
     {% else %}
         <p><a href="{% url 'login' %}">Loghează-te</a> pentru a salva în favorite</p>
     {% endif %}
-    <h2>Evenimente recomandate</h2>
+<h2>🎉 Evenimente recomandate în {{ location.name }}</h2>
+
 <ul>
   {% for event in events %}
-    <li>
-      <strong>{{ event.title }}</strong> - {{ event.date }} <br>
+    <li class="mb-3">
+      <strong>{{ event.title }}</strong> ({{ event.category }}) <br>
+      📅 {{ event.date }} <br>
       {{ event.description }}
     </li>
   {% empty %}
-    <li>Niciun eveniment recomandat.</li>
+    <li>Momentan nu sunt evenimente disponibile pentru această locație.</li>
   {% endfor %}
 </ul>
 </body>
