@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
-from core.views import home_view
+from core.views import home_view,search_view
 from django.shortcuts import redirect
+from events.views import event_participate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
+    path('search/', search_view, name='search'),
     path('core/', include('core.urls')),
     path('recommendations/', include('recommendations.urls')),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
@@ -35,5 +37,6 @@ urlpatterns = [
     path('', lambda request: redirect('activities:activity_list')),
     path('activities/', include('activities.urls')),  # Include activities app URLs
     path("events/", include("events.urls")),  # Include events app URLs
+    path('events/<int:pk>/participate/',event_participate, name='event_participate'),
     
 ]

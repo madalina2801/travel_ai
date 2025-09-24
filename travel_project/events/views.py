@@ -3,15 +3,27 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Event
 from .forms import EventForm, CommentForm
+from django.db.models import Count, F
+from django.db.models.functions import Coalesce
 # Create your views here.
 def event_list(request):
-    now = timezone.now()
-    events_ai = Event.objects.filter(is_ai_generated=True).order_by("date")
-    events_user = Event.objects.filter(is_ai_generated=False).order_by("date")
 
-    print("NOW:", now)
-    print("AI events:", list(events_ai.values("title", "date")))
-    print("User events:", list(events_user.values("title", "date")))
+    # Evenimente AI
+    events_ai = Event.objects.filter(is_ai_generated=True).annotate(
+        participants_count=Coalesce(Count('participants'), 0),
+        max_participants_filled=Coalesce('max_participants', 0)
+    ).annotate(
+        available_slots=F('max_participants_filled') - F('participants_count')
+    ).order_by("date")
+
+    # Evenimente comunitate
+    events_user = Event.objects.filter(is_ai_generated=False).annotate(
+        participants_count=Coalesce(Count('participants'), 0),
+        max_participants_filled=Coalesce('max_participants', 0)
+    ).annotate(
+        available_slots=F('max_participants_filled') - F('participants_count')
+    ).order_by("date")
+
     context = {
         "events_ai": events_ai,
         "events_user": events_user,
@@ -59,3 +71,16 @@ def join_event(request, pk):
     else:
         event.participants.add(request.user)
     return redirect('event_detail', pk=event.pk)
+
+@login_required
+def event_participate(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    user = request.user
+
+    if user.is_authenticated:
+        # verificăm dacă există limită și dacă mai sunt locuri
+        if event.max_participants is None or event.participants.count() < event.max_participants:
+            event.participants.add(user)
+            event.save()
+
+    return redirect('event_list')

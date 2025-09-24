@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Rezultate căutare pentru "{{ query }}"</h2>
+
+<h3>Evenimente:</h3>
+<ul>
+  {% for event in results_events %}
+    <li><a href="{% url 'event_detail' event.pk %}">{{ event.title }}</a></li>
+  {% empty %}
+    <li>Nu s-au găsit evenimente.</li>
+  {% endfor %}
+</ul>
+
+<h3>Locații:</h3>
+<ul>
+  {% for location in results_locations %}
+    <li>{{ location.name }}</li>
+  {% empty %}
+    <li>Nu s-au găsit locații.</li>
+  {% endfor %}
+</ul>
+
+<h3>Activități:</h3>
+<ul>
+  {% for activity in results_activities %}
+    <li><a href="{% url 'activities:activity_detail' activity.pk %}">{{ activity.name }}</a></li>
+  {% empty %}
+    <li>Nu s-au găsit activități.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

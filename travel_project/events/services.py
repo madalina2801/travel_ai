@@ -3,6 +3,7 @@ import re
 from recommendations.ollama_utils import call_ollama
 from .models import Event
 from django.utils import timezone
+from datetime import datetime
 
 def extract_json_blocks(text):
     """
@@ -21,7 +22,7 @@ def extract_json_blocks(text):
             continue
     return results
 
-def generate_ai_events(location, user=None):
+def generate_ai_events(location, user=None): 
     """
     Generează evenimente AI pentru o locație, le curăță și le salvează doar pe cele valide.
     Returnează lista de evenimente create.
@@ -32,7 +33,7 @@ def generate_ai_events(location, user=None):
     - title (string)
     - description (string)
     - category (string)
-    - date (string, format YYYY-MM-DD)
+    - date (string, format YYYY-MM-DD, viitoare)
     """
 
     response_text = call_ollama(prompt)
@@ -45,12 +46,25 @@ def generate_ai_events(location, user=None):
         category = (e.get("category") or "General").strip()
         date_str = e.get("date") or e.get("date (în format YYYY-MM-DD)")
 
-        # Skip dacă nu există titlu sau dată
-        if not title or not date_str:
+        # Skip dacă nu există titlu
+        if not title:
+            continue
+
+        # Parsează data în format datetime.date
+        date_obj = None
+        if date_str:
+            try:
+                date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+            except ValueError:
+                print(f"Format dată invalid pentru evenimentul {title}: {date_str}")
+                continue  # ignoră evenimentul dacă data e invalidă
+
+        # Skip dacă nu există dată validă
+        if not date_obj:
             continue
 
         # Verificare duplicate
-        if Event.objects.filter(title=title, date=date_str, location=location, is_ai_generated=True).exists():
+        if Event.objects.filter(title=title, date=date_obj, location=location, is_ai_generated=True).exists():
             continue
 
         # Creare eveniment valid
@@ -60,7 +74,7 @@ def generate_ai_events(location, user=None):
                 title=title,
                 description=description,
                 category=category,
-                date=date_str,
+                date=date_obj,
                 created_by=user if user else None,
                 is_ai_generated=True
             )

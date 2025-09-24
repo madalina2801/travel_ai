@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Hero Banner -->
 <style>
 .hero-banner {
   background-image: url('/static/images/banner-machu-picchu.jpg'); 
@@ -55,4 +56,100 @@
     <a href="{% url 'event_list' %}" class="btn btn-warning ms-3">📅 Vezi evenimentele</a>
   </div>
 </div>
+
+<!-- Search Box -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <form method="get" action="{% url 'search' %}" class="d-flex">
+      <input type="text" name="q" class="form-control me-2" placeholder="Caută itinerarii, locații, evenimente sau activități...">
+      <button class="btn btn-primary" type="submit">🔍 Caută</button>
+    </form>
+  </div>
+</section>
+
+<!-- Itinerarii și activități -->
+<section class="py-5">
+  <div class="container">
+    <h2>🏞️ Itinerarii și activități</h2>
+    <div class="row">
+      {% for activity in activities %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          {% if activity.image %}
+          <img src="{{ activity.image.url }}" class="card-img-top" alt="{{ activity.name }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ activity.name }}</h5>
+            <p class="card-text">{{ activity.description|truncatewords:20 }}</p>
+            <a href="{% url 'activities:activity_detail' activity.pk %}" class="btn btn-outline-primary btn-sm">Detalii</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Evenimente viitoare -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <h2>📅 Evenimente viitoare</h2>
+    <div class="row">
+      {% for event in upcoming_events %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text text-muted">
+              📍 {{ event.location.name }} <br>
+              📆 {{ event.date|date:"d M Y " }}
+            </p>
+            <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+            <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline-primary btn-sm">Detalii</a>
+            <a href="{% url 'event_participate' event.pk %}" class="btn btn-primary btn-sm">👍 Participă</a>
+            <span class="ms-2 text-muted">Participanți: {{ event.participants.count }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Evenimente cu locuri limitate -->
+<section class="py-5">
+  <div class="container">
+    <h2>⚠️ Evenimente cu locuri limitate</h2>
+    <div class="row">
+      {% for event in limited_events %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-danger">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text text-muted">
+              <p class="card-text text-muted">
+  Participanți: {{ event.participants_count }} / {{ event.max_participants }}
+</p>
+<p class="card-text text-muted">
+  Locuri disponibile: {{ event.available_slots }}
+</p>
+            </p>
+            <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline-danger btn-sm">Detalii</a>
+            <a href="{% url 'event_participate' event.pk %}" class="btn btn-danger btn-sm">👍 Participă</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Social Media Icons -->
+<section class="py-4 text-center">
+  <a href="https://facebook.com" class="me-3" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
+  <a href="https://twitter.com" class="me-3" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+  <a href="https://instagram.com" class="me-3" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+  <a href="https://linkedin.com" class="me-3" target="_blank"><i class="fab fa-linkedin fa-2x"></i></a>
+</section>
+
 {% endblock %}
