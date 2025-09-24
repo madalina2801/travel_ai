@@ -40,4 +40,4 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Comentariu de la  {self.user.username} la {self.event.title}"
+        return f"Comentariu de la  {self.user.username} la {self.event.title}" 
