@@ -11,24 +11,21 @@ from django.contrib import messages
 import random
 
 
-
-
-
 def generate_ai_recommendation(user_profile):
 
-    # Preferințele fallback
+    
     accommodation_pref = user_profile.accommodation_preference or "nu a specificat"
     restaurant_pref = user_profile.restaurant_preference or "nu a specificat"
 
 
-    # Obține locațiile recomandate anterior
+    
     previous_locations = Recommendation.objects.filter(user_profile=user_profile).values_list('location__name', flat=True)
     exclude_cities = ', '.join(previous_locations) if previous_locations else "Nicio locație anterioară"
 
-    # Seed random pentru variație
+    
     random_seed = random.randint(1000, 9999)
 
-    # Prompt îmbunătățit
+    # Prompt pentru modelul AI
     prompt = f"""
 Creează o recomandare turistică personalizată pentru un utilizator cu:
 - Buget: {user_profile.budget} EUR

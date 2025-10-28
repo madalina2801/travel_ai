@@ -90,7 +90,7 @@ def toggle_favorite_location(request, location_id):
     else:
         user_profile.favorite_locations.add(location)
     
-    return redirect('locations:locations_list')  # redirecționează către lista locațiilor
+    return redirect('locations:location_list')  # redirecționează către lista locațiilor
 
 @login_required
 def favorite_locations_view(request):

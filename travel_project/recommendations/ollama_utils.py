@@ -3,7 +3,7 @@ import requests
 def call_ollama(prompt: str) -> str:
     url = "http://localhost:11434/api/generate"
     payload = {
-        "model": "gemma3",
+        "model": "gemma3:latest",
         "prompt": prompt,
         "stream": False
     }
