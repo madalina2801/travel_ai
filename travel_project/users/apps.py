@@ -6,4 +6,4 @@ class UsersConfig(AppConfig):
     name = 'travel_project.users'
 
     def ready(self):
-        import users.signals
+        import travel_project.users.signals
