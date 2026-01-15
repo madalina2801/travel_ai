@@ -40,13 +40,12 @@ INSTALLED_APPS = [
 
     #my apps
     'travel_project.locations',
-    'travel_projectrecommendations',
+    'travel_project.recommendations',
     'travel_project.itineraries',
     'travel_project.users.apps.UsersConfig',  # Ensure the UsersConfig is included
     'travel_project.core',  # Include the core app
     'travel_project.activities',  # Include the activities app
-    'events',  # Include the events app
-
+    'travel_project.events',  # Include the events app
 ]
 
 MIDDLEWARE = [
