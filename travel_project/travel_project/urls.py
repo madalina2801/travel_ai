@@ -24,19 +24,48 @@ from travel_project.events.views import event_participate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Home & search
     path('', home_view, name='home'),
     path('search/', search_view, name='search'),
-    path('core/', include('core.urls')),
-    path('recommendations/', include('recommendations.urls')),
-    path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('accounts/', include('users.urls')),
-    path('profile/', include('users.urls')),
-    path('itineraries/', include('itineraries.urls')), # Include itineraries app URLs
-    path('locations/', include('locations.urls')),  # Include locations app URLs
+
+    # Core
+    path('core/', include('travel_project.core.urls')),
+
+    # Recommendations
+    path('recommendations/', include('travel_project.recommendations.urls')),
+
+    # Auth
+    path(
+        'accounts/login/',
+        auth_views.LoginView.as_view(template_name='registration/login.html'),
+        name='login'
+    ),
+    path(
+        'accounts/logout/',
+        auth_views.LogoutView.as_view(),
+        name='logout'
+    ),
+
+    # Users / profiles
+    path('accounts/', include('travel_project.users.urls')),
+    path('profile/', include('travel_project.users.urls')),
+
+    # Itineraries
+    path('itineraries/', include('travel_project.itineraries.urls')),
+
+    # Locations
+    path('locations/', include('travel_project.locations.urls')),
+
+    # Activities
+    path('activities/', include('travel_project.activities.urls')),
     path('', lambda request: redirect('activities:activity_list')),
-    path('activities/', include('activities.urls')),  # Include activities app URLs
-    path("events/", include("events.urls")),  # Include events app URLs
-    path('events/<int:pk>/participate/',event_participate, name='event_participate'),
-    
+
+    # Events
+    path('events/', include('travel_project.events.urls')),
+    path(
+        'events/<int:pk>/participate/',
+        event_participate,
+        name='event_participate'
+    ),
 ]
