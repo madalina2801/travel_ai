@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #my apps
-    'locations',
-    'recommendations',
-    'itineraries',
-    'users.apps.UsersConfig',  # Ensure the UsersConfig is included
-    'core',  # Include the core app
-    'activities',  # Include the activities app
+    'travel_project.locations',
+    'travel_projectrecommendations',
+    'travel_project.itineraries',
+    'travel_project.users.apps.UsersConfig',  # Ensure the UsersConfig is included
+    'travel_project.core',  # Include the core app
+    'travel_project.activities',  # Include the activities app
     'events',  # Include the events app
 
 ]
