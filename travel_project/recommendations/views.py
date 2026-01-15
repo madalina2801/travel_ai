@@ -3,9 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import Recommendation
-from travel_project.users.models import UserProfile
+from users.models import UserProfile
 from datetime import timedelta
-from travel_project.locations.models import Location
+from locations.models import Location
 from .ollama_utils import call_ollama
 from django.contrib import messages
 import random

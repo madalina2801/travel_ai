@@ -43,13 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #my apps
-    'travel_project.locations',
-    'travel_project.recommendations',
-    'travel_project.itineraries',
-    'travel_project.users.apps.UsersConfig',  # Ensure the UsersConfig is included
-    'travel_project.core',  # Include the core app
-    'travel_project.activities',  # Include the activities app
-    'travel_project.events',  # Include the events app
+    'locations',
+    'recommendations',
+    'itineraries',
+    'users.apps.UsersConfig',  # Ensure the UsersConfig is included
+    'core',  # Include the core app
+    'activities',  # Include the activities app
+    'events',  # Include the events app
 ]
 
 MIDDLEWARE = [
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'travel_project.travel_project.urls'
+ROOT_URLCONF = 'travel_project.urls'
 
 LOGIN_URL = '/accounts/login/'
 
@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'travel_project.travel_project.wsgi.application'
+WSGI_APPLICATION = 'travel_project.wsgi.application'
 
 
 # Database

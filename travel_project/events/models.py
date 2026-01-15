@@ -1,7 +1,7 @@
 from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
-from travel_project.locations.models import Location
+from locations.models import Location
 # Create your models here.
 
 class Event(models.Model):

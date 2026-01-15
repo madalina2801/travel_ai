@@ -1,6 +1,6 @@
 import json
 import re
-from travel_project.recommendations.ollama_utils import call_ollama
+from recommendations.ollama_utils import call_ollama
 from .models import Event
 from django.utils import timezone
 from datetime import datetime

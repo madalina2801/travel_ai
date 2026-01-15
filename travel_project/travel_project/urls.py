@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
-from travel_project.core.views import home_view,search_view
+from core.views import home_view,search_view
 from django.shortcuts import redirect
-from travel_project.events.views import event_participate
+from events.views import event_participate
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,10 +30,10 @@ urlpatterns = [
     path('search/', search_view, name='search'),
 
     # Core
-    path('core/', include('travel_project.core.urls')),
+    path('core/', include('core.urls')),
 
     # Recommendations
-    path('recommendations/', include('travel_project.recommendations.urls')),
+    path('recommendations/', include('recommendations.urls')),
 
     # Auth
     path(
@@ -48,21 +48,21 @@ urlpatterns = [
     ),
 
     # Users / profiles
-    path('accounts/', include('travel_project.users.urls')),
-    path('profile/', include('travel_project.users.urls')),
+    path('accounts/', include('users.urls')),
+    path('profile/', include('users.urls')),
 
     # Itineraries
-    path('itineraries/', include('travel_project.itineraries.urls')),
+    path('itineraries/', include('itineraries.urls')),
 
     # Locations
-    path('locations/', include('travel_project.locations.urls')),
+    path('locations/', include('locations.urls')),
 
     # Activities
-    path('activities/', include('travel_project.activities.urls')),
+    path('activities/', include('activities.urls')),
     path('', lambda request: redirect('activities:activity_list')),
 
     # Events
-    path('events/', include('travel_project.events.urls')),
+    path('events/', include('events.urls')),
     path(
         'events/<int:pk>/participate/',
         event_participate,
