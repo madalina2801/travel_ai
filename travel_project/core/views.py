@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.utils import timezone
 from django.db.models import Count, F, Q
-from events.models import Event
-from activities.models import Activity
-from locations.models import Location
+from travel_project.events.models import Event
+from travel_project.activities.models import Activity
+from travel_project.locations.models import Location
 
 def home_view(request):
     today = timezone.now().date()  # dacă Event.date e DateField

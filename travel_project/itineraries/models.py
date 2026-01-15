@@ -1,6 +1,6 @@
 from django.db import models
-from users.models import UserProfile
-from locations.models import Location
+from travel_project.users.models import UserProfile
+from travel_project.locations.models import Location
 
 class Itinerary(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

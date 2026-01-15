@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import path,include
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
-from core.views import home_view,search_view
+from travel_project.core.views import home_view,search_view
 from django.shortcuts import redirect
-from events.views import event_participate
+from travel_project.events.views import event_participate
 
 urlpatterns = [
     path('admin/', admin.site.urls),

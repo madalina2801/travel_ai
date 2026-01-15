@@ -1,6 +1,6 @@
 from django import forms
 from .models import Location
-from activities.models import Activity
+from travel_project.activities.models import Activity
 
 CLIMATE_CHOICES = [
     ('', 'Orice climă'),

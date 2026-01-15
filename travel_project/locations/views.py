@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from locations.models import Location
-from activities.models import Activity
+from travel_project.locations.models import Location
+from travel_project.activities.models import Activity
 from .forms import LocationFilterForm
-from users.models import UserProfile
-from recommendations.ollama_utils import call_ollama
+from travel_project.users.models import UserProfile
+from travel_project.recommendations.ollama_utils import call_ollama
 from django.contrib.auth.decorators import login_required
-from events.services import generate_ai_events
+from travel_project.events.services import generate_ai_events
 
 def location_list_view(request): 
     locations = Location.objects.all()

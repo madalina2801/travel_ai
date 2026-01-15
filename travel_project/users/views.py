@@ -4,9 +4,9 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserProfileForm
 from .models import UserProfile
-from itineraries.models import Itinerary
-from recommendations.views import generate_ai_recommendation
-from recommendations.models import Recommendation
+from travel_project.itineraries.models import Itinerary
+from travel_project.recommendations.views import generate_ai_recommendation
+from travel_project.recommendations.models import Recommendation
 
 @login_required
 def edit_profile(request):

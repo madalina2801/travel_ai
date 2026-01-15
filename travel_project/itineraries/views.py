@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect
 from .forms import ItineraryForm
 from .models import Itinerary
-from users.models import UserProfile
-from recommendations.ollama_utils import call_ollama
+from travel_project.users.models import UserProfile
+from travel_project.recommendations.ollama_utils import call_ollama
 from django.shortcuts import get_object_or_404
-from locations.models import Location
+from travel_project.locations.models import Location
 import json
 import re
 

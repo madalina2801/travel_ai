@@ -1,6 +1,6 @@
 from django import forms
 from .models import Itinerary
-from locations.models import Location
+from travel_project.locations.models import Location
 
 class ItineraryForm(forms.ModelForm):
     location = forms.ModelChoiceField(queryset=Location.objects.all())

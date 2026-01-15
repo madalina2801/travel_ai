@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from activities.models import Activity
+from travel_project.activities.models import Activity
 
 CLIMATE_CHOICES = [
     ('', 'Orice climă'),
