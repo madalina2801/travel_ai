@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'travel_project.urls'
+ROOT_URLCONF = 'travel_project.travel_project.urls'
 
 LOGIN_URL = '/accounts/login/'
 
@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'travel_project.wsgi.application'
+WSGI_APPLICATION = 'travel_project.travel_project.wsgi.application'
 
 
 # Database
