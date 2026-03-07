@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Generare recomandare...{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 60px 20px;">
+
+  <h2>⏳ Se generează recomandarea ta...</h2>
+  <p>Motorul AI lucrează. Această pagină se va actualiza automat.</p>
+  <p style="color: #888; font-size: 0.9em;">ID recomandare: #{{ recommendation.pk }}</p>
+
+</div>
+
+{# Auto-refresh every 3 seconds — polls this same view until status == completed #}
+<meta http-equiv="refresh" content="3">
+{% endblock %}

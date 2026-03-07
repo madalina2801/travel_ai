@@ -1,0 +1,57 @@
+version: "3.9"
+
+networks:
+  travel_network:
+    driver: bridge
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - travel_network
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
+      DJANGO_SETTINGS_MODULE: travel_project.settings
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - travel_network
+
+  celery_worker:
+    build: .
+    command: >
+      celery -A travel_project worker
+             --loglevel=info
+             --queues=recommendations
+             --concurrency=2
+    volumes:
+      - ./db.sqlite3:/app/db.sqlite3
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672//
+      DJANGO_SETTINGS_MODULE: travel_project.settings
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - travel_network

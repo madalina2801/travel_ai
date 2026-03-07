@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserProfileForm
 from .models import UserProfile
 from itineraries.models import Itinerary
-from recommendations.views import generate_ai_recommendation
 from recommendations.models import Recommendation
 
 @login_required

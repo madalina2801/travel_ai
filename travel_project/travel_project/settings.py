@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',  # For storing Celery task results in the database
 
     #my apps
     'locations',
@@ -144,3 +146,31 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# ── Celery / RabbitMQ configuration ─────────────────────────────────────────
+#
+# CELERY_BROKER_URL is read from the environment so you never hardcode
+# credentials. Set it in your .env file or Railway environment variables.
+#
+# Local development default:  amqp://guest:guest@localhost:5672//
+# Railway:  set RABBITMQ_URL in Railway dashboard → copied here automatically
+#
+CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@localhost:5672//')
+
+# Store task results back in the Django database (optional but useful for status polling)
+# CELERY_RESULT_BACKEND = 'django-db'   # requires: pip install django-celery-results
+# CELERY_RESULT_EXTENDED = True         # stores task name, args, kwargs for debugging
+
+# Serialization
+CELERY_TASK_SERIALIZER   = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT    = ['json']
+
+# Timezone
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
+
+# Retry behaviour: if RabbitMQ is down at startup, keep trying to connect
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# One queue for all tasks — keeps it simple
+CELERY_TASK_DEFAULT_QUEUE = 'recommendations'
